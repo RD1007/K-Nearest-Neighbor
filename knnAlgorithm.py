@@ -1,46 +1,79 @@
 import math
+import string
+import matplotlib.pyplot as plt
+import csv
+from collections import defaultdict
+
 # https://realpython.com/knn-python/
+
+def csvReader(file):
+    output_dict = dict()
+    with open(file) as fin:
+        dr = csv.DictReader(fin)
+        for row in dr:
+            output_dict[row.get('letter')] = [int(row.get('x')), int(row.get('y')), int(row.get('z'))], row.get('color')
+    return output_dict
 
 def norm(a, b):
     sideValues = 0
     for n in range(0, max(len(a),len(b))):
         sideValues += ((a[n]-b[n])**2) # Add a check for if there is no value in that position
-    norm = math.sqrt(sideValues)
+    norm = round(math.sqrt(sideValues),2)
     return norm
 
+def display(output_dict):
+    for keys, values in output_dict.items():
+        plt.scatter(values[0][0], values[0][1], values[0][2], values[1])
+        plt.text(x=values[0][0]-0.5, y=values[0][1]-0.5, s=f"{keys}")
+    plt.title("3D Plane")
+    plt.xlabel("X")
+    plt.ylabel("Y")
+    plt.show()
+
+def distance(input_dict, new_point):
+    distance_dict = dict()
+    values_set = set()
+    for keys, values in input_dict.items():
+        distance = float(norm(values[0], new_point))
+        distance_dict[keys] = distance
+        values_set.add(distance)
+    return closest(distance_dict, values_set)
+
+def closest(distance_dict, values_set):
+    distance_dict = dict(distance_dict)
+    values_set = set(values_set)
+    new_dict = dict()
+    for i in range(3):
+        for keys, values in distance_dict.items():
+            if values == min(values_set):
+                new_dict[keys] = values
+                # distance_dict.pop(keys)
+        values_set.remove(min(values_set))
+    while len(new_dict) > 3:
+    # if len(new_dict) > 3: 
+        # print(len(new_dict))
+        # print(max(new_dict.values()))
+        # print (new_dict)
+        new_dict.pop([key for key, value in new_dict.items() if value == max(new_dict.values())][0])
+    return new_dict
+
 def main():
-    a = [19, 0, 6]
-    b = [14, 8, 7]
-    c = [16, 15, 14]
-    d = [19, 5, 3]
-    e = [15, 18, 1]
-    f = [11, 6, 15]
-    g = [12, 16, 6]
-    h = [8, 0, 1]
-    i = [10, 9, 4]
-    j = [15, 8, 1]
-    k = [12, 15, 15]
-    l = [17, 3, 1]
-    m = [18, 13, 8]
-    n = [19, 0, 11]
-    o = [17, 17, 2]
-    p = [3, 16, 9]
-    q = [9, 9, 5]
-    r = [16, 7, 0]
-    s = [3, 6, 6]
-    t = [13, 1, 16]
-    u = [8, 1, 12]
-    v = [5, 9, 11]
-    w = [16, 4, 11]
-    x = [16, 14, 18]
-    y = [13, 17, 7]
-    z = [5, 2, 8]
-    alphabet = [a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z]
-    output_set = set()
-    new_point = [5,3,8]
-    for i in range(0,len(alphabet)):
-        output_set.add(round((norm(alphabet[i], new_point)),2))
-    print((output_set))
+    new_point = [5,3,9]
+    file = "coordinate_data.csv"
+    output_dict = dict(csvReader(file))
+    distance_dict = distance(output_dict, new_point)
+    print(distance_dict)
+    display(output_dict)
+
+
+    #Notes to self
+    #Get specified amount of max values
+    #Link all values to their alphabet variable
+    #Add the check to add 0 if an array is missing a value
 
 if __name__ == '__main__':
     main()
+
+
+# for the baby's name see what things have the most that match and then use the values of that
+# to see what is closest
