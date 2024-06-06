@@ -35,7 +35,6 @@ def maxKey(max_value, output_dict, k):
             if value == max_value:
                 max_keys.append(key)
             if len(max_keys) >= k: return (max_keys)
-    return (max_keys)
 
 def maxValue(output_dict):
     return (max(output_dict.values()))
@@ -62,7 +61,6 @@ def mostCommon(new_values, max_keys, file, empty_value, empty_index):
             else:
                 common_dict[rows[row_number][empty_index]] = 1
     largest_value = maxValue(common_dict)
-    print(common_dict)
     common_dict = {key: value for key, value in common_dict.items() if value == largest_value}
     return (list(common_dict.keys()))
 
@@ -72,24 +70,33 @@ def display(most_likely_value, empty_value):
     else:
         print(f"{empty_value} of the input is most likely \n{most_likely_value[0]}")
 
-
-def main():
-    # User Inputted Lines
-    k = int(3)
-    new_values = {"Year of Birth": None,"Gender": "FEMALE","Ethnicity": "HISPANIC","Child's First Name": "JAYLA"}
-
-    # file = "Temp_Baby_Names.csv"
-    file = "Popular_Baby_Names.csv"
+# Takes user input and file and then outputs most likely response
+def predicition(k, new_values, file):
+    
     output_dict = dict(csvReader(file, new_values))
     empty_value = emptyValue(new_values)
 
-    # Next 4 variables are only used once but it heavily decreases readibility
+    # Next 4 variables are only used once but merging the lines heavily decreases readibility
     empty_index = emptyIndex(file, empty_value)
     max_value = maxValue(output_dict)
     max_keys = maxKey(max_value, output_dict, k)
     most_likely_value = mostCommon(new_values, max_keys, file, empty_value, empty_index)
 
     display(most_likely_value, empty_value)
+
+    # This works but is really ugly to read
+    # display(mostCommon(new_values, maxKey(maxValue(output_dict), output_dict, k), file, empty_value, emptyIndex(file, empty_value)), empty_value)
+
+def main():
+    # User Inputted Lines
+    k = int(9)
+    # new_values = {"Year of Birth": None,"Gender": "FEMALE","Ethnicity": "HISPANIC","Child's First Name": "JAYLA"}
+    new_values = {"Year of Birth": "2012","Gender": "MALE","Ethnicity": None,"Child's First Name": "AUSTIN"} 
+
+    path = "inputData\\"
+    file = "Popular_Baby_Names.csv"
+
+    predicition(k, new_values, path+file)
 
 if __name__ == '__main__':
     main()
