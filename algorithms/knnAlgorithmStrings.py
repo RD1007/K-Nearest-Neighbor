@@ -1,15 +1,10 @@
-import math
-import string
-import matplotlib.pyplot as plt
 import csv
-from collections import defaultdict
 
 # https://realpython.com/knn-python/
 
 def csvReader(file, new_values):
     output_dict = dict()
     fields = (new_values.keys())
-
     with open(file) as fin:
         reader = csv.DictReader(fin)
         for i, row in enumerate(reader, start=1):
@@ -20,11 +15,42 @@ def csvReader(file, new_values):
             output_dict[i] = temp
     return output_dict
 
-def validateK(output_dict, k):
-    if (k > len(output_dict)):
-        print(f"k with the value of {k} is larger than the csv length of {len(output_dict)}")
+def csvLength(file):
+    return(len(list(csv.reader(open(file))))-1)
+
+#Take any field that gives the exact same data as each other and then remove that
+def userInputs(file):
+    k = 0
+    while True:
+        k = int(input(f"Enter an odd numbers smaller than {csvLength(file)}: "))
+        if (validateK(csvLength(file), k)):
+            break
+    while True:
+        empty_value = (input(f"Of the following values pick a value to find \n{(csv.DictReader(open(file))).fieldnames}: "))
+        if (empty_value in ((csv.DictReader(open(file))).fieldnames)):
+            break
+
+
+    new_values = dict()
+    with open(file) as fin:
+        reader = csv.DictReader(fin)
+        fields = reader.fieldnames
+        for field in [f for f in fields if f != empty_value]:
+            new_values[field] = (input(f"Enter a value for {field}: "))
+    new_values = {key: value for key, value in new_values.items() if value}
+
+    # return [new_values]
+    return [k, empty_value, new_values]
+        
+
+def validateK(csv_length, k):
+    if (k > csv_length):
+        print(f"k with the value of {k} is larger than the csv length of {csv_length}")
+        return (False)
     if (k%2) == 0:
         print (f"k with the value of {k} is not odd")
+        return (False)
+    return (True)
 
 def maxKey(max_value, output_dict, k):
     max_keys = []
@@ -39,19 +65,14 @@ def maxKey(max_value, output_dict, k):
 def maxValue(output_dict):
     return (max(output_dict.values()))
 
-def emptyValue(new_values):
-    for key, value in new_values.items():
-        if value == None:
-            return(key)
 
 def emptyIndex(file, empty_value):
     with open(file) as fin:
         reader = csv.DictReader(fin)
         return (reader.fieldnames.index(empty_value))
 
-def mostCommon(new_values, max_keys, file, empty_value, empty_index):
+def mostCommon(max_keys, file, empty_index):
     common_dict = dict()
-    new_values.pop(empty_value)
     for row_number in max_keys:
         with open(file) as fin:
             reader = csv.reader(fin)
@@ -71,36 +92,27 @@ def display(most_likely_value, empty_value):
         print(f"{empty_value} of the input is most likely \n{most_likely_value[0]}")
 
 # Takes user input and file and then outputs most likely response
-def predicition(k, new_values, file):
+def predicition(k, empty_value, new_values, file):
     
     output_dict = dict(csvReader(file, new_values))
-    empty_value = emptyValue(new_values)
 
     # Next 4 variables are only used once but merging the lines heavily decreases readibility
     empty_index = emptyIndex(file, empty_value)
     max_value = maxValue(output_dict)
     max_keys = maxKey(max_value, output_dict, k)
-    most_likely_value = mostCommon(new_values, max_keys, file, empty_value, empty_index)
+
+    most_likely_value = mostCommon(max_keys, file, empty_index)
 
     display(most_likely_value, empty_value)
 
-    # This works but is really ugly to read
-    # display(mostCommon(new_values, maxKey(maxValue(output_dict), output_dict, k), file, empty_value, emptyIndex(file, empty_value)), empty_value)
 
 def main():
-    # User Inputted Lines
-    k = int(9)
-    # new_values = {"Year of Birth": None,"Gender": "FEMALE","Ethnicity": "HISPANIC","Child's First Name": "JAYLA"}
-    new_values = {"Year of Birth": "2012","Gender": "MALE","Ethnicity": None,"Child's First Name": "AUSTIN"} 
-
     path = "inputData\\"
     file = "Popular_Baby_Names.csv"
+    file = path+file
+    inputs = userInputs(file)
 
-    predicition(k, new_values, path+file)
+    predicition(int(inputs[0]), inputs[1], inputs[2], file)
 
 if __name__ == '__main__':
     main()
-
-
-# Future additions
-# See what values are significantly significant and if they match a differnent row within the data then remove that row
