@@ -1,0 +1,37 @@
+{
+  "name": "k-nearest-neighbor",
+  "version": "1.0.0",
+  "description": "an app to analyze csv data and give most likely field for any new data",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack serve",
+    "build": "webpack",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RD1007/K-Nearest-Neighbor.git"
+  },
+  "author": "Ryan Dillon and Austin Pruitt",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RD1007/K-Nearest-Neighbor/issues"
+  },
+  "homepage": "https://github.com/RD1007/K-Nearest-Neighbor#readme",
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.24.7",
+    "@babel/preset-env": "^7.24.7",
+    "@babel/preset-react": "^7.24.7",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.5.15",
+    "babel-loader": "^9.1.3",
+    "html-webpack-plugin": "^5.6.0",
+    "react-refresh": "^0.14.2",
+    "webpack": "^5.92.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.0.4"
+  }
+}

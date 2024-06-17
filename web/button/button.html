@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dropdown Example</title>
+    <!-- Include React and ReactDOM libraries -->
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+</head>
+<body>
+
+<h1>My First Heading</h1>
+<p>My first paragraph.</p>
+
+<!-- Root element for React to render the App component -->
+<div id="root"></div>
+
+<!-- Include your custom JavaScript file -->
+<script type="text/javascript" src="button.js"></script>
+<script type="text/javascript">
+    // Render the App component into the root element once the DOM is fully loaded
+    document.addEventListener('DOMContentLoaded', function() {
+        ReactDOM.render(React.createElement(App), document.getElementById('root'));
+    });
+</script>
+
+</body>
+</html>
