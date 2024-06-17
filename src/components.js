@@ -22,7 +22,7 @@ export function Navigation() {
       <>
         <h2>Comments</h2>
         <Comment text="Hello!" author="Sophie" />
-        <Comment text="How are you?" author="Sunil" />
+        <Comment text="How are you? and all that" author="Sunil" />
       </>
     );
   }

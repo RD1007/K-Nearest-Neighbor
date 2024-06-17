@@ -32,18 +32,18 @@ module.exports = {
                 }
             }
         },
-        // {
-        //     test: /\.css$/i,
-        //     use: ["style-loader", "css-loader"],
-        // },
-        // {
-        //     test: /\.(png|jp(e*)g|svg|gif)$/,
-        //     use: ['file-loader'],
-        // },
-        // {
-        //     test: /\.svg$/,
-        //     use: ['@svgr/webpack'],
-        // }
+        {
+            test: /\.css$/i,
+            use: ["style-loader", "css-loader"],
+        },
+        {
+            test: /\.(png|jp(e*)g|svg|gif)$/,
+            use: ['file-loader'],
+        },
+        {
+            test: /\.svg$/,
+            use: ['@svgr/webpack'],
+        }
         ]
     },
     plugins: [
@@ -58,5 +58,22 @@ module.exports = {
         },
         hot: true, // Enable HMR
         liveReload: true, // Enable live reloading
+        allowedHosts: 'all',
+        watchFiles: {
+            poll: 1000,
+        }
     },
+    // devServer: {
+    //     host: '0.0.0.0',
+    //     hot: true,
+    //     client: {
+    //         webSocketURL: {
+    //             port: 443
+    //         }
+    //     },
+    //     allowedHosts: 'all',
+    //     watchFiles: {
+    //         poll: true
+    //     }
+    // },
 }
